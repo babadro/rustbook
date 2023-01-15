@@ -31,7 +31,24 @@ fn main() {
 
     **b = 3;
 
-    println!("{:?}", a)
+    println!("{:?}", a);
+
+    play_with_clone()
+}
+
+fn play_with_clone() {
+    let a = Some(Box::new(10));
+
+    let as_ref = a.as_ref();
+
+    let cloned = as_ref.cloned();
+
+    let mut unwrapped = cloned.unwrap();
+
+    *unwrapped = 1;
+
+    println!("{:?}", a);
+    println!("{:?}", unwrapped);
 }
 
 fn my_func(a: &mut i32) {
