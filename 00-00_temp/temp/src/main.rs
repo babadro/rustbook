@@ -58,3 +58,57 @@ fn my_func(a: &mut i32) {
 fn func2(a: String) {
     //a.push_str("asd") // compile error. Need to use mut a as arg
 }
+
+fn mut_mut_mut() {
+    // 1: let not_mut = &mut
+    let mut a = 1;
+
+    let b = &mut a;
+
+    *b = 3;
+
+    // 2: let not_mut = mut, copy
+    let mut a = 1;
+
+    let b = a; // b was copied here
+
+    a = 1; // no problem, a was not moved
+
+    // b = 3; // compile error, b is immutable
+
+    // 3: let not_mut = mut, no copy
+    let a = Box::new(1);
+
+    let b = a;
+
+    // println!("{:?}", a); // compile error, a is moved
+
+    // *b = 1; // compile error, b is immutable
+
+    // 4: not move because copy
+    let a = 1;
+    accept_by_value(a);
+
+    println!("{:?}", a); // no problem, a was copied inside accept_by_value
+
+    // 5: move because cant copy
+    let a = Box::new(1);
+
+    accept_by_pointer(a);
+
+    // println!("{:?}", a); // compile error, a was moved inside accept_by_pointer
+
+    let c = Box::new(1);
+
+    let d = c; // c moved to a because can't be copied
+
+    // println!("{:?}", c); // compile error, c was moved to d
+}
+
+fn accept_by_value(a: i32) {
+    println!("{:?}", a);
+}
+
+fn accept_by_pointer(a: Box<i32>) {
+    println!("{:?}", a);
+}
